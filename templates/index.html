@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generative AI Prompt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    
+    #promptForm {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 600px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+    
+    button[type="submit"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    
+    #responseOutput {
+      margin-top: 20px;
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+    }
+    
+    #responseOutput p {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>VortexQI</h1>
+  <form id="promptForm">
+    <label for="part1">Lecture:</label>
+    <textarea id="part1" name="part1" rows="4" cols="50"></textarea>
+    
+    <!-- Similar input fields for part 2 and part 3 -->
+    
+    <label for="part2"> </label>
+    <textarea id="part2" name="part2" style="display: none;">Your role is to answer questions like how he explained, based on this provided data, always try to explain the complex concept in a simple way and be as detailed as possible. If extra explanation is needed for the question, then explain it.</textarea>
+    
+    <label for="part3">Your Question:</label>
+    <textarea id="part3" name="part3" rows="4" cols="50"></textarea>
+    
+    <button type="submit">Generate Response</button>
+  </form>
+
+  <div id="responseOutput">
+    <!-- Generated response will be displayed here -->
+  </div>
+
+  <script>
+    document.getElementById('promptForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // Fetch user inputs
+      const part1 = document.getElementById('part1').value;
+      const part2 = document.getElementById('part2').value;
+      const part3 = document.getElementById('part3').value;
+
+      // Send the inputs to the backend for processing
+      fetch('/generate_response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ part1, part2, part3 })
+      })
+      .then(response => response.text())
+      .then(data => {
+        // Display the generated response in the HTML
+        document.getElementById('responseOutput').innerHTML = `<p>${data}</p>`;
+      });
+    });
+  </script>
+</body>
+</html>
